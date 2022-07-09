@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -11,22 +9,27 @@ type Menu struct {
 	ButtonSpacing int32
 
 	Buttons []*MenuButton
+	Scenes  []string
 }
 
-func NewMenu(windowWidth int32, windowHeight int32) Menu {
+func NewMenu(windowWidth int32, windowHeight int32) *Menu {
 	var width int32 = 256
 	result := Menu{
 		Rect:          &sdl.Rect{X: windowWidth/2 - width/2, Y: 0, W: width, H: windowHeight},
 		ButtonSpacing: 20,
 		Buttons:       make([]*MenuButton, 0),
+		Scenes:        make([]string, 0),
 	}
 
-	btn1 := NewMenuButton(result.Rect, "Exercise 1", func() { fmt.Println("Exercise 1") })
+	btn1 := NewMenuButton(result.Rect, "Exercise 1")
 	result.Buttons = append(result.Buttons, &btn1)
-	btn2 := NewMenuButton(result.Rect, "Exercise 2", func() { fmt.Println("Exercise 2") })
+	result.Scenes = append(result.Scenes, "ex1")
+	btn2 := NewMenuButton(result.Rect, "Exercise 2")
 	result.Buttons = append(result.Buttons, &btn2)
-	btn3 := NewMenuButton(result.Rect, "Exercise 3", func() { fmt.Println("Exercise 3") })
+	result.Scenes = append(result.Scenes, "ex2")
+	btn3 := NewMenuButton(result.Rect, "Exercise 3")
 	result.Buttons = append(result.Buttons, &btn3)
+	result.Scenes = append(result.Scenes, "ex3")
 
 	buttonCount := int32(len(result.Buttons))
 	totalSpacing := (buttonCount - 1) * result.ButtonSpacing
@@ -37,7 +40,11 @@ func NewMenu(windowWidth int32, windowHeight int32) Menu {
 		btn.Rect.Y = int32(index)*result.ButtonSpacing + startY + int32(index)*btn.Rect.H
 	}
 
-	return result
+	return &result
+}
+
+func (menu *Menu) Open() {
+	// Nothing to do here
 }
 
 func (menu *Menu) Resize(windowWidth int32, windowHeight int32) {
@@ -57,9 +64,11 @@ func (menu *Menu) Resize(windowWidth int32, windowHeight int32) {
 	}
 }
 
-func (menu *Menu) Tick(input *Input) {
-	for _, btn := range menu.Buttons {
-		btn.Tick(input)
+func (menu *Menu) Tick(input *Input, app *App) {
+	for index, btn := range menu.Buttons {
+		if btn.Tick(input) {
+			app.OpenScene(menu.Scenes[index])
+		}
 	}
 }
 

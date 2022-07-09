@@ -10,16 +10,13 @@ type MenuButton struct {
 
 	IsHovered bool
 	IsActive  bool
-
-	Callback func()
 }
 
-func NewMenuButton(containerRect *sdl.Rect, name string, callback func()) (result MenuButton) {
+func NewMenuButton(containerRect *sdl.Rect, name string) (result MenuButton) {
 	// Rect.Y does not matter, the container will place the buttons correctly on the y axis
 	result.Rect = &sdl.Rect{X: containerRect.X, Y: 0, W: containerRect.W, H: 48}
 	result.Name = name
 
-	result.Callback = callback
 	return
 }
 
@@ -27,7 +24,7 @@ func (btn *MenuButton) Resize(containerRect *sdl.Rect) {
 	btn.Rect.X = containerRect.X
 }
 
-func (btn *MenuButton) Tick(input *Input) {
+func (btn *MenuButton) Tick(input *Input) bool {
 	if input.MousePosition.InRect(btn.Rect) {
 		btn.IsHovered = true
 
@@ -37,12 +34,14 @@ func (btn *MenuButton) Tick(input *Input) {
 
 		if input.LMB == JustReleased {
 			btn.IsActive = false
-			btn.Callback()
+			return true
 		}
 	} else {
 		btn.IsHovered = false
 		btn.IsActive = false
 	}
+
+	return false
 }
 
 func (btn *MenuButton) Render(renderer *sdl.Renderer, app *App) {

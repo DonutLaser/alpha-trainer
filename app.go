@@ -1,11 +1,17 @@
 package main
 
-import "github.com/veandco/go-sdl2/sdl"
+import (
+	"math/rand"
+	"time"
+
+	"github.com/veandco/go-sdl2/sdl"
+)
 
 type Scene interface {
-	Tick(input *Input)
-	Render(renderer *sdl.Renderer, app *App)
+	Open()
 	Resize(windowWidth int32, windowHeight int32)
+	Tick(input *Input, app *App)
+	Render(renderer *sdl.Renderer, app *App)
 }
 
 type App struct {
@@ -15,18 +21,23 @@ type App struct {
 	Fonts map[string]Font
 }
 
-func NewApp(windowWidth int32, windowHeight int32) (result App) {
-	result.Scenes = make(map[string]Scene)
+func NewApp(windowWidth int32, windowHeight int32) *App {
+	result := &App{
+		Scenes: make(map[string]Scene),
+		Fonts:  make(map[string]Font),
+	}
 
-	menuScene := NewMenu(windowWidth, windowHeight)
-	result.Scenes["menu"] = &menuScene
+	result.Scenes["menu"] = NewMenu(windowWidth, windowHeight)
+	result.Scenes["ex1"] = NewExercise1(windowWidth, windowHeight)
 
 	result.ActiveScene = result.Scenes["menu"]
 
-	result.Fonts = make(map[string]Font, 0)
 	result.Fonts["s"] = LoadFont("assets/fonts/consolab.ttf", 18)
+	result.Fonts["xxl"] = LoadFont("assets/fonts/consolab.ttf", 64)
 
-	return
+	rand.Seed(time.Now().UnixNano())
+
+	return result
 }
 
 func (app *App) Close() {
@@ -39,7 +50,7 @@ func (app *App) Resize(windowWidth int32, windowHeight int32) {
 }
 
 func (app *App) Tick(input *Input) {
-	app.ActiveScene.Tick(input)
+	app.ActiveScene.Tick(input, app)
 }
 
 func (app *App) Render(renderer *sdl.Renderer) {
@@ -49,4 +60,9 @@ func (app *App) Render(renderer *sdl.Renderer) {
 	app.ActiveScene.Render(renderer, app)
 
 	renderer.Present()
+}
+
+func (app *App) OpenScene(scene string) {
+	app.ActiveScene = app.Scenes[scene]
+	app.ActiveScene.Open()
 }
