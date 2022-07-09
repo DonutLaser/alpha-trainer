@@ -3,8 +3,9 @@ package main
 import "github.com/veandco/go-sdl2/sdl"
 
 type Progress struct {
-	Rect     *sdl.Rect
-	MaxWidth int32
+	Rect         *sdl.Rect
+	PercentValue float32
+	MaxWidth     int32
 }
 
 func NewProgress(containerRect *sdl.Rect) (result Progress) {
@@ -15,8 +16,10 @@ func NewProgress(containerRect *sdl.Rect) (result Progress) {
 }
 
 func (progress *Progress) Resize(containerRect *sdl.Rect) {
+	progress.MaxWidth = containerRect.W
 	progress.Rect.X = containerRect.X
 	progress.Rect.Y = containerRect.Y + containerRect.H - 18
+	progress.Rect.W = int32(float32(progress.MaxWidth) * progress.PercentValue)
 }
 
 func (progress *Progress) Tick(input *Input) {
@@ -28,5 +31,6 @@ func (progress *Progress) Render(renderer *sdl.Renderer) {
 }
 
 func (progress *Progress) Update(percent float32) {
+	progress.PercentValue = percent
 	progress.Rect.W = int32(float32(progress.MaxWidth) * percent)
 }

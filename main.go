@@ -27,7 +27,7 @@ func main() {
 	windowWidth, windowHeight := window.GetSize()
 
 	app := NewApp(windowWidth, windowHeight)
-	input := Input{}
+	input := NewInput()
 
 	running := true
 	for running {
@@ -59,43 +59,43 @@ func main() {
 				switch keycode {
 				case sdl.K_1:
 					if t.State != sdl.RELEASED {
-						input.Alpha1 = true
+						input.AlphaNumbers[1] = true
 					}
 				case sdl.K_2:
 					if t.State != sdl.RELEASED {
-						input.Alpha2 = true
+						input.AlphaNumbers[2] = true
 					}
 				case sdl.K_3:
 					if t.State != sdl.RELEASED {
-						input.Alpha3 = true
+						input.AlphaNumbers[3] = true
 					}
 				case sdl.K_4:
 					if t.State != sdl.RELEASED {
-						input.Alpha4 = true
+						input.AlphaNumbers[4] = true
 					}
 				case sdl.K_5:
 					if t.State != sdl.RELEASED {
-						input.Alpha5 = true
+						input.AlphaNumbers[5] = true
 					}
 				case sdl.K_6:
 					if t.State != sdl.RELEASED {
-						input.Alpha6 = true
+						input.AlphaNumbers[6] = true
 					}
 				case sdl.K_7:
 					if t.State != sdl.RELEASED {
-						input.Alpha7 = true
+						input.AlphaNumbers[7] = true
 					}
 				case sdl.K_8:
 					if t.State != sdl.RELEASED {
-						input.Alpha8 = true
+						input.AlphaNumbers[8] = true
 					}
 				case sdl.K_9:
 					if t.State != sdl.RELEASED {
-						input.Alpha9 = true
+						input.AlphaNumbers[9] = true
 					}
 				case sdl.K_0:
 					if t.State != sdl.RELEASED {
-						input.Alpha0 = true
+						input.AlphaNumbers[0] = true
 					}
 				}
 			case *sdl.WindowEvent:

@@ -12,32 +12,21 @@ const (
 )
 
 type Input struct {
-	Alpha1        bool
-	Alpha2        bool
-	Alpha3        bool
-	Alpha4        bool
-	Alpha5        bool
-	Alpha6        bool
-	Alpha7        bool
-	Alpha8        bool
-	Alpha9        bool
-	Alpha0        bool
+	AlphaNumbers  []bool
 	MousePosition sdl.Point
 	LMB           ButtonState
 	RMB           ButtonState
 }
 
+func NewInput() (result Input) {
+	result.AlphaNumbers = make([]bool, 10)
+	return
+}
+
 func (input *Input) Clear() {
-	input.Alpha1 = false
-	input.Alpha2 = false
-	input.Alpha3 = false
-	input.Alpha4 = false
-	input.Alpha5 = false
-	input.Alpha6 = false
-	input.Alpha7 = false
-	input.Alpha8 = false
-	input.Alpha9 = false
-	input.Alpha0 = false
+	for i := 0; i < 10; i++ {
+		input.AlphaNumbers[i] = false
+	}
 
 	if input.LMB == JustReleased {
 		input.LMB = None
