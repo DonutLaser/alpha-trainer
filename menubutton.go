@@ -30,17 +30,18 @@ func (btn *MenuButton) Resize(containerRect *sdl.Rect) {
 func (btn *MenuButton) Tick(input *Input) {
 	if input.MousePosition.InRect(btn.Rect) {
 		btn.IsHovered = true
-		btn.IsActive = input.LMB == Pressed
+
+		if !btn.IsActive {
+			btn.IsActive = input.LMB == JustPressed
+		}
 
 		if input.LMB == JustReleased {
+			btn.IsActive = false
 			btn.Callback()
 		}
 	} else {
-		if btn.IsActive {
-			btn.IsActive = input.LMB == Pressed
-		}
-
 		btn.IsHovered = false
+		btn.IsActive = false
 	}
 }
 
