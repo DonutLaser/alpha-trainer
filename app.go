@@ -29,10 +29,12 @@ func NewApp(windowWidth int32, windowHeight int32) *App {
 
 	result.Scenes["menu"] = NewMenu(windowWidth, windowHeight)
 	result.Scenes["ex1"] = NewExercise1(windowWidth, windowHeight)
+	result.Scenes["ex2"] = NewExercise2(windowWidth, windowHeight)
 
 	result.ActiveScene = result.Scenes["menu"]
 
 	result.Fonts["s"] = LoadFont("assets/fonts/consolab.ttf", 18)
+	result.Fonts["xxl"] = LoadFont("assets/fonts/consolab.ttf", 64)
 	result.Fonts["xxxxl"] = LoadFont("assets/fonts/consolab.ttf", 256)
 
 	rand.Seed(time.Now().UnixNano())
@@ -48,6 +50,7 @@ func (app *App) Close() {
 func (app *App) Resize(windowWidth int32, windowHeight int32) {
 	app.Scenes["menu"].Resize(windowWidth, windowHeight)
 	app.Scenes["ex1"].Resize(windowWidth, windowHeight)
+	app.Scenes["ex2"].Resize(windowWidth, windowHeight)
 }
 
 func (app *App) Tick(input *Input) {
