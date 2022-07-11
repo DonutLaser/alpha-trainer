@@ -27,9 +27,6 @@ func NewMenu(windowWidth int32, windowHeight int32) *Menu {
 	btn2 := NewMenuButton(result.Rect, "Exercise 2")
 	result.Buttons = append(result.Buttons, &btn2)
 	result.Scenes = append(result.Scenes, "ex2")
-	btn3 := NewMenuButton(result.Rect, "Exercise 3")
-	result.Buttons = append(result.Buttons, &btn3)
-	result.Scenes = append(result.Scenes, "ex3")
 
 	buttonCount := int32(len(result.Buttons))
 	totalSpacing := (buttonCount - 1) * result.ButtonSpacing
